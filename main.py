@@ -16,12 +16,9 @@ windowWidth = ws.winfo_reqwidth()
 windowHeight = ws.winfo_reqheight()
 
 # Gets both half the screen width/height and window width/height
-positionRight = int(ws.winfo_screenwidth() / 5 - windowWidth / 2)
-positionDown = int(ws.winfo_screenheight() / 7 - windowHeight / 2)
+positionRight = int(ws.winfo_screenwidth() / 2.5 - windowWidth / 2)
+positionDown = int(ws.winfo_screenheight() / 3 - windowHeight / 2)
 ws.geometry("+{}+{}".format(positionRight, positionDown))
-
-
-
 
 
 # НАЧАЛО НА СТЪПКА 1
@@ -36,37 +33,34 @@ def open_file_zip(zipbutton):
     warn.grid(row=1, column=0, padx=10, pady=20)
     zip_path = askopenfilename()
     zip_name = (os.path.basename(zip_path))
-    #print(zip_path)
+    # print(zip_path)
     zip_name_noext = os.path.splitext(zip_name)[0]
     zip_path_noext = os.path.splitext(zip_path)[0]
-    #print(zip_path_noext)
+    # print(zip_path_noext)
 
     with ZipFile(zip_path, 'r') as zipObj:
         listOfiles = zipObj.namelist()
-        #print(listOfiles)
+        # print(listOfiles)
         p = Path(listOfiles[0])
         if str(p.parent) == '.':
             p = Path(listOfiles[1])
-        #print(p.parent)
+        # print(p.parent)
         zip_main_folder = str(p.parent)
         ppp = Path(zip_path)
         main_path = '/'.join(ppp.parts[0:-1])
         zipObj.extractall(path=main_path)
 
-    working_dir = (os.path.dirname(zip_path_noext)+'/'+zip_main_folder) #Името на мейн фолдъре, както се разархивира
-    #print(working_dir)
-    main_dir_folders = [f for f in listdir(working_dir)] #Имената на всички фолдър във основната
-    #print('main_dir: '+ ' '.join(main_dir_folders))
-    xhtml_name = [f for f in listdir(working_dir+'/reports')]
-
+    working_dir = (
+                os.path.dirname(zip_path_noext) + '/' + zip_main_folder)  # Името на мейн фолдъре, както се разархивира
+    # print(working_dir)
+    main_dir_folders = [f for f in listdir(working_dir)]  # Имената на всички фолдър във основната
+    # print('main_dir: '+ ' '.join(main_dir_folders))
+    xhtml_name = [f for f in listdir(working_dir + '/reports')]
 
     fold_list = ['META-INF', 'reports']
-    company_name = list(set(main_dir_folders)-set(fold_list)) #Името на 3тия фолдър
+    company_name = list(set(main_dir_folders) - set(fold_list))  # Името на 3тия фолдър
     new_fold_str = '/xbrl/2020'
     old_fold_str = '/xbrl/2019'
-
-
-
 
     if ch1.get() == 1 and ch0.get() == 0:
         try:
@@ -86,13 +80,11 @@ def open_file_zip(zipbutton):
     else:
         xmls_names = [f for f in listdir(working_dir + '/' + ' '.join(company_name) + old_fold_str)]
 
-
-
         all_files_paths = [working_dir + '/META-INF/catalog.xml', working_dir + '/META-INF/taxonomyPackage.xml',
                            working_dir + '/reports/' + ' '.join(xhtml_name)]
 
         for xmls in xmls_names:
-            all_files_paths.append(working_dir + '/'+ ' '.join(company_name) + old_fold_str +'/'+xmls)
+            all_files_paths.append(working_dir + '/' + ' '.join(company_name) + old_fold_str + '/' + xmls)
 
     '''if ch2.get() == 1:
         et = xml.etree.ElementTree.parse(working_dir+'/'+'META-INF'+'/'+'taxonomyPackage.xml')
@@ -107,7 +99,7 @@ def open_file_zip(zipbutton):
     for files in all_files_paths:
         p = Path(files)
         try:
-            #print(files)
+            # print(files)
             if ch0.get() == 0:
                 with open(files, "r+", encoding="utf-8") as f:
                     fold_link = '/xbrl/2019'
@@ -153,48 +145,48 @@ def open_file_zip(zipbutton):
                     newline = []
                     for line in f.readlines():
 
-                        if str_old_0 in line and ch2.get() == 1:
+                        if str_old_0 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_0, str_new_0))
-                        elif str_old_1 in line and ch3.get() == 1:
+                        elif str_old_1 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_1, str_new_1))
-                        elif str_old_2 in line and ch4.get() == 1:
+                        elif str_old_2 in line and ch1.get() == 1:
                             r1 = line.replace(str_old_2, str_new_2)
                             r2 = r1.replace(str_old_18, str_new_18)
                             newline.append(r2)
-                        elif str_old_3 in line and ch5.get() == 1:
+                        elif str_old_3 in line and ch1.get() == 1:
                             e1 = line.replace(str_old_3, str_new_3)
                             e2 = e1.replace(fold_link, fold_link_new)
                             if ch1.get() == 1:
                                 newline.append(e2)
                             else:
                                 newline.append(e1)
-                        elif str_old_4 in line and ch6.get() == 1:
+                        elif str_old_4 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_4, str_new_4))
-                        elif str_old_5 in line and ch7.get() == 1:
+                        elif str_old_5 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_5, str_new_5))
-                        elif str_old_6 in line and ch8.get() == 1:
+                        elif str_old_6 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_6, str_new_6))
-                        elif str_old_7 in line and ch9.get() == 1:
+                        elif str_old_7 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_7, str_new_7))
-                        elif str_old_8 in line and ch10.get() == 1:
+                        elif str_old_8 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_8, str_new_8))
-                        elif str_old_9 in line and ch11.get() == 1:
+                        elif str_old_9 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_9, str_new_9))
-                        elif str_old_10 in line and ch12.get() == 1:
+                        elif str_old_10 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_10, str_new_10))
-                        elif str_old_11 in line and ch13.get() == 1:
+                        elif str_old_11 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_11, str_new_11))
-                        elif str_old_12 in line and ch14.get() == 1:
+                        elif str_old_12 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_12, str_new_12))
-                        elif str_old_13 in line and ch15.get() == 1:
+                        elif str_old_13 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_13, str_new_13))
-                        elif str_old_14 in line and ch16.get() == 1:
+                        elif str_old_14 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_14, str_new_14))
-                        elif str_old_15 in line and ch17.get() == 1:
+                        elif str_old_15 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_15, str_new_15))
-                        elif str_old_16 in line and ch18.get() == 1:
+                        elif str_old_16 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_16, str_new_16))
-                        elif str_old_17 in line and ch19.get() == 1:
+                        elif str_old_17 in line and ch1.get() == 1:
                             newline.append(line.replace(str_old_17, str_new_17))
                         elif str_old_18 in line:
                             newline.append(line.replace(str_old_18, str_new_18))
@@ -215,6 +207,13 @@ def open_file_zip(zipbutton):
 
                 os.rename(str(p.parent) + '/' + os.path.splitext(p.name)[0] + "_NEW" + p.suffix,
                           str(p.parent) + '/' + os.path.splitext(p.name)[0] + p.suffix)
+
+
+                #shutil.make_archive(os.path.splitext(zip_path)[0]+'_NEW', 'zip', os.path.dirname(zip_path_noext),
+                #                    zip_main_folder)
+                #os.remove(os.path.splitext(zip_path)[0] + '.zip')
+                #os.rename(os.path.splitext(zip_path)[0] + '_NEW.zip', os.path.splitext(zip_path)[0] + '.zip')
+
             else:
                 if '_cal.xml' in files:
                     with open(files, "r+", encoding="utf-8") as f:
@@ -224,19 +223,26 @@ def open_file_zip(zipbutton):
                                 nline.append(line1)
                                 nline.append(
                                     '    <link:loc xlink:type="locator" xlink:href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_NoncurrentLeaseLiabilities" xlink:label="NoncurrentLeaseLiabilities"/>\n')
-                                nline.append('    <link:calculationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/summation-item" xlink:from="NoncurrentLiabilities" xlink:to="NoncurrentLeaseLiabilities" order="4.1" weight="1"/>\n')
+                                nline.append(
+                                    '    <link:calculationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/summation-item" xlink:from="NoncurrentLiabilities" xlink:to="NoncurrentLeaseLiabilities" order="4.1" weight="1"/>\n')
                             elif '"CurrentLiabilitiesOtherThanLiabilitiesIncludedInDisposalGroupsClassifiedAsHeldForSale" xlink:to="CurrentTaxLiabilitiesCurrent" order="3.0" weight="1"/>' in line1:
                                 nline.append(line1)
-                                nline.append('    <link:loc xlink:type="locator" xlink:href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_CurrentLeaseLiabilities" xlink:label="CurrentLeaseLiabilities"/>\n')
-                                nline.append('    <link:calculationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/summation-item" xlink:from="CurrentLiabilitiesOtherThanLiabilitiesIncludedInDisposalGroupsClassifiedAsHeldForSale" xlink:to="CurrentLeaseLiabilities" order="3.1" weight="1"/>\n')
+                                nline.append(
+                                    '    <link:loc xlink:type="locator" xlink:href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_CurrentLeaseLiabilities" xlink:label="CurrentLeaseLiabilities"/>\n')
+                                nline.append(
+                                    '    <link:calculationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/summation-item" xlink:from="CurrentLiabilitiesOtherThanLiabilitiesIncludedInDisposalGroupsClassifiedAsHeldForSale" xlink:to="CurrentLeaseLiabilities" order="3.1" weight="1"/>\n')
                             elif 'xlink:from="loc_4" xlink:to="loc_16" order="30.0" weight="-1"/>' in line1:
                                 nline.append(line1)
-                                nline.append('    <link:loc xlink:type="locator" xlink:href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_CostOfMerchandiseSold" xlink:label="loc_60"/>\n')
-                                nline.append('    <link:calculationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/summation-item" xlink:from="loc_4" xlink:to="loc_60" order="30.1" weight="-1"/>\n')
+                                nline.append(
+                                    '    <link:loc xlink:type="locator" xlink:href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_CostOfMerchandiseSold" xlink:label="loc_60"/>\n')
+                                nline.append(
+                                    '    <link:calculationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/summation-item" xlink:from="loc_4" xlink:to="loc_60" order="30.1" weight="-1"/>\n')
                             elif 'xlink:from="loc_4" xlink:to="loc_20" order="50.0" weight="-1"/>' in line1:
                                 nline.append(line1)
-                                nline.append('    <link:loc xlink:type="locator" xlink:href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_ServicesExpense" xlink:label="loc_89"/>\n')
-                                nline.append('    <link:calculationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/summation-item" xlink:from="loc_4" xlink:to="loc_89" order="50.1" weight="-1"/>\n')
+                                nline.append(
+                                    '    <link:loc xlink:type="locator" xlink:href="http://xbrl.ifrs.org/taxonomy/2019-03-27/full_ifrs/full_ifrs-cor_2019-03-27.xsd#ifrs-full_ServicesExpense" xlink:label="loc_89"/>\n')
+                                nline.append(
+                                    '    <link:calculationArc xlink:type="arc" xlink:arcrole="http://www.xbrl.org/2003/arcrole/summation-item" xlink:from="loc_4" xlink:to="loc_89" order="50.1" weight="-1"/>\n')
 
                             else:
                                 nline.append(line1)
@@ -252,33 +258,30 @@ def open_file_zip(zipbutton):
 
                         os.rename(str(p.parent) + '/' + os.path.splitext(p.name)[0] + "_NEW" + p.suffix,
                                   str(p.parent) + '/' + os.path.splitext(p.name)[0] + p.suffix)
-
-
-
+                        os.rename(os.path.splitext(zip_path)[0]+'.zip', os.path.splitext(zip_path)[0]+'_OLD.zip')
+                        shutil.make_archive(os.path.splitext(zip_path)[0], 'zip', os.path.dirname(zip_path_noext), zip_main_folder)
+                        shutil.rmtree(os.path.dirname(zip_path_noext)+'/'+zip_main_folder, ignore_errors=True)
 
 
         except:
 
             raise
 
-
-
-    #shutil.make_archive(zip_name_noext+'_New', 'zip', zip_name_noext)
-    #shutil.rmtree(zip_path_noext)
+    # shutil.make_archive(zip_name_noext+'_New', 'zip', zip_name_noext)
+    # shutil.rmtree(zip_path_noext)
     time.sleep(1.5)
     warn.destroy()
     zipbutton["state"] = "enable"
 
+
 # КРАЙ НА СТЪПКА 1
-
-
 
 
 # НАЧАЛО НА СТЪПКА 2
 
 
 def open_file_xhtml(adharbtn):
-    adharbtn["state"]="disabled"
+    adharbtn["state"] = "disabled"
     warn = Label(
         ws,
         text='Моля, изчакайте !',
@@ -289,7 +292,7 @@ def open_file_xhtml(adharbtn):
     file_path = askopenfilename()
 
     try:
-        with open (file_path, "r+", encoding="utf-8") as f:
+        with open(file_path, "r+", encoding="utf-8") as f:
             newline = []
             corp_name_all = ''
             for line in f.readlines():
@@ -298,18 +301,18 @@ def open_file_xhtml(adharbtn):
                     newline.append(line.replace('Current Year', 'Текуща година'))
                 elif 'easyESEF' in line:
                     today = str(date.today())
-                    newline.append('<!-- Изготвено за Вас на '+today+'-->')
+                    newline.append('<!-- Изготвено за Вас на ' + today + '-->')
 
 
                 elif 'name="ifrs-full:NameOfReportingEntityOrOtherMeansOfIdentification"' in line:
                     result = re.search('">(.*)</', line)
-                    #global corp_name
+                    # global corp_name
                     corp_name = re.search('>(.*)<', str(result.group(1)))
                     corp_name_all = corp_name.group(1)
                     newline.append(line)
                 elif '>INDEX<' in line:
 
-                    newline.append(line.replace('>INDEX<', '>'+corp_name_all+'<'))
+                    newline.append(line.replace('>INDEX<', '>' + corp_name_all + '<'))
 
                 elif 'LEI (Legal Entity Identifier) of reporting entity' in line:
                     newline.append(line.replace('LEI (Legal Entity Identifier) of reporting entity',
@@ -374,8 +377,9 @@ def open_file_xhtml(adharbtn):
                     newline.append(line.replace('[AT BEGINNING OF PERIOD]', '[В началото на периода]'))
 
                 elif 'Увеличение (намаление) на материалните запаси от готова продукция и незавършено производство' in line:
-                    newline.append(line.replace('Увеличение (намаление) на материалните запаси от готова продукция и незавършено производство',
-                                                'Намаление(Увеличение) на материалните запаси от готова продукция и незавършено производство'))
+                    newline.append(line.replace(
+                        'Увеличение (намаление) на материалните запаси от готова продукция и незавършено производство',
+                        'Намаление(Увеличение) на материалните запаси от готова продукция и незавършено производство'))
                 elif '„Използвани суровини, материали и консумативи“;' in line:
                     newline.append(line.replace(
                         '„Използвани суровини, материали и консумативи“;',
@@ -513,17 +517,22 @@ def open_file_xhtml(adharbtn):
                         '[Net]',
                         'НЕТО '))
 
+                #elif '"ifrs-full:' in line:
 
-
-
+                #    result = re.search('"ifrs-full:(.*)" contextRef', line)
+                #    if result is not None:
+                #        print('ifrs-full:' + result.group(1))
+                #    newline.append(line)
 
                 else:
+
                     newline.append(line)
 
         save_path_1 = os.path.dirname(os.path.abspath(file_path))
 
         p = Path(file_path)
-        completeName_1 = os.path.join(save_path_1, str(p.parent) + '/' + os.path.splitext(p.name)[0] + "_NEW" + p.suffix)
+        completeName_1 = os.path.join(save_path_1,
+                                      str(p.parent) + '/' + os.path.splitext(p.name)[0] + "_NEW" + p.suffix)
 
         with open(completeName_1, "w", encoding="utf-8") as f:
             for line in newline:
@@ -536,7 +545,7 @@ def open_file_xhtml(adharbtn):
         ######################
         with open(file_path, "r+", encoding="utf-8") as f:
             new_line = []
-            colors_reset = {'#383D91':'' , '#E1E7F3':'' , '#708FC9':'' , '#F2F2F2':'' , '#FFFFFF':''}
+            colors_reset = {'#383D91': '', '#E1E7F3': '', '#708FC9': '', '#F2F2F2': '', '#FFFFFF': ''}
             for line_css in f.readlines():
 
                 if '</title>' in line_css:
@@ -558,68 +567,69 @@ def open_file_xhtml(adharbtn):
                         '             $(this).parent().attr("style", "border-top: 1px dotted #000000; border-width: 1px; border-bottom: 1px solid black");\n'
                         '         });\n'
                         '     });\n'
-                                                
-                        
-                        
-                    '    });\n'
-                    '</script>\n'
+
+
+
+                        '    });\n'
+                        '</script>\n'
                     ))
 
                 elif '<style type="text/css">' in line_css:
-                    #new_line.append(line_css)
+                    # new_line.append(line_css)
                     new_line.append(line_css.replace(
                         '<style type="text/css">',
                         '<style type="text/css">\n'
                         '      td {padding-top: 3px; padding-bottom:3px;}\n'
-                        #'      td[style="border-left-style:none;border-right-style:none;"] {  background: #FFF; padding-top:20px;}\n'
-                        
+                        # '      td[style="border-left-style:none;border-right-style:none;"] {  background: #FFF; padding-top:20px;}\n'
+
                         '      table[tbl=\'000\']>tr:nth-child(n+5)>td:not([style="border-left-style:none;border-right-style:none;"]) {background: #ebf2f3}  \n'
                         '      table[tbl=\'000\']>tr:nth-child(odd)>td:not([style="border-left-style:none;border-right-style:none;"]) {background: #FFF} \n'
-                        #'      table[tbl=\'000\']>tr:nth-child(4) {display: none;}\n'
-                        
+                        # '      table[tbl=\'000\']>tr:nth-child(4) {display: none;}\n'
+
                         '      table[tbl=\'110\']>tr:nth-child(n+5)>td:not([style="border-left-style:none;border-right-style:none;"]) {background: #ebf2f3}  \n'
                         '      table[tbl=\'110\']>tr:nth-child(odd)>td:not([style="border-left-style:none;border-right-style:none;"]) {background: #FFF} \n'
-                        #'      table[tbl=\'110\']>tr:nth-child(4), table[tbl=\'110\']>tr:nth-child(6) {display: none;}\n'
-                        
+                        # '      table[tbl=\'110\']>tr:nth-child(4), table[tbl=\'110\']>tr:nth-child(6) {display: none;}\n'
+
                         '      table[tbl=\'210\']>tr:nth-child(n+5)>td:not([style="border-left-style:none;border-right-style:none;"]) {background: #ebf2f3}  \n'
                         '      table[tbl=\'210\']>tr:nth-child(even)>td:not([style="border-left-style:none;border-right-style:none;"]) {background: #FFF} \n'
-                        #'      table[tbl=\'210\']>tr:nth-child(4), table[tbl=\'210\']>tr:nth-child(5), table[tbl=\'210\']>tr:nth-child(6), table[tbl=\'210\']>tr:nth-child(7) {display: none;}\n'
-                        
+                        # '      table[tbl=\'210\']>tr:nth-child(4), table[tbl=\'210\']>tr:nth-child(5), table[tbl=\'210\']>tr:nth-child(6), table[tbl=\'210\']>tr:nth-child(7) {display: none;}\n'
+
                         '      table[tbl=\'320\']>tr:nth-child(n+5)>td:not([style="border-left-style:none;border-right-style:none;"]) {background: #ebf2f3}  \n'
                         '      table[tbl=\'320\']>tr:nth-child(even)>td:not([style="border-left-style:none;border-right-style:none;"]) {background: #FFF} \n'
-                        #'      table[tbl=\'320\']>tr:nth-child(4), table[tbl=\'320\']>tr:nth-child(5), table[tbl=\'320\']>tr:nth-child(6), table[tbl=\'320\']>tr:nth-child(7) {display: none;}\n'
-                        
+                        # '      table[tbl=\'320\']>tr:nth-child(4), table[tbl=\'320\']>tr:nth-child(5), table[tbl=\'320\']>tr:nth-child(6), table[tbl=\'320\']>tr:nth-child(7) {display: none;}\n'
+
                         '      table[tbl=\'420\']>tr:nth-child(n+5)>td:not([style="border-left-style:none;border-right-style:none;"]) {background: #ebf2f3}  \n'
                         '      table[tbl=\'420\']>tr:nth-child(odd)>td:not([style="border-left-style:none;border-right-style:none;"]) {background: #FFF} \n'
-                        #'      table[tbl=\'420\']>tr:nth-child(4), table[tbl=\'420\']>tr:nth-child(5), table[tbl=\'420\']>tr:nth-child(6), table[tbl=\'420\']>tr:nth-child(7) {display: none;}\n'
-                        
+                        # '      table[tbl=\'420\']>tr:nth-child(4), table[tbl=\'420\']>tr:nth-child(5), table[tbl=\'420\']>tr:nth-child(6), table[tbl=\'420\']>tr:nth-child(7) {display: none;}\n'
+
                         '      table[tbl=\'510\']>tr:nth-child(n+5)>td:not([style="border-left-style:none;border-right-style:none;"]) {background: #ebf2f3}  \n'
                         '      table[tbl=\'510\']>tr:nth-child(odd)>td:not([style="border-left-style:none;border-right-style:none;"]) {background: #FFF} \n'
-                        #'      table[tbl=\'510\']>tr:nth-child(4), table[tbl=\'510\']>tr:nth-child(5), table[tbl=\'510\']>tr:nth-child(6), table[tbl=\'510\']>tr:nth-child(7) {display: none;}\n'
-                        
+                        # '      table[tbl=\'510\']>tr:nth-child(4), table[tbl=\'510\']>tr:nth-child(5), table[tbl=\'510\']>tr:nth-child(6), table[tbl=\'510\']>tr:nth-child(7) {display: none;}\n'
+
                         '      table[tbl=\'610\']>tr>td { border-left-color:#808080;border-left-style:solid;border-right-color:#808080;border-right-style:solid;border-top-color:#808080;border-top-style:solid;border-bottom-color:#808080;border-bottom-style:solid;}  \n'
-                        #'      table:nth-child(13)>tr:nth-child(odd)>td:not([style="border-left-style:none;border-right-style:none;"]) {background: #FFF} \n'
+                        # '      table:nth-child(13)>tr:nth-child(odd)>td:not([style="border-left-style:none;border-right-style:none;"]) {background: #FFF} \n'
                         '      table[tbl=\'000\']>tr>td {border-bottom: 1px solid black;}\n'
                         '      table[tbl=\'110\']>tr:nth-child(n+6) {border-bottom: 1px solid black;}\n'
                     ))
                 elif 'margin:0px auto 0px auto;' in line_css:
-                    #margin = line_css.replace('margin:0px auto 0px auto;','margin:0px auto 0px 0px;')
+                    # margin = line_css.replace('margin:0px auto 0px auto;','margin:0px auto 0px 0px;')
                     new_line.append(line_css.replace(
                         'margin:0px auto 0px auto;',
                         'margin:0px auto 0px 0px;'))
                 elif 'height:' in line_css:
                     new_line.append(line_css.replace('height:', 'min-height:'))
                 elif any(word in line_css for word in colors_reset):
-                        r1 = line_css.replace('#383D91','')
-                        r2 = r1.replace('#E1E7F3','')
-                        r3 = r2.replace('#708FC9','')
-                        r4 = r3.replace('#F2F2F2', '')
-                        r5 = r4.replace('#FFFFFF', '')
-                        r6 = r5.replace('calibri,sans-serif', 'Verdana')
-                        r7 = r6.replace('14.667px', '12px')
-                        r8 = r7.replace('border-left-color:#808080;border-left-style:solid;border-right-color:#808080;border-right-style:solid;border-top-color:#808080;border-top-style:solid;border-bottom-color:#808080;border-bottom-style:solid;',
-                                        '')
-                        new_line.append(r8)
+                    r1 = line_css.replace('#383D91', '')
+                    r2 = r1.replace('#E1E7F3', '')
+                    r3 = r2.replace('#708FC9', '')
+                    r4 = r3.replace('#F2F2F2', '')
+                    r5 = r4.replace('#FFFFFF', '')
+                    r6 = r5.replace('calibri,sans-serif', 'Verdana')
+                    r7 = r6.replace('14.667px', '12px')
+                    r8 = r7.replace(
+                        'border-left-color:#808080;border-left-style:solid;border-right-color:#808080;border-right-style:solid;border-top-color:#808080;border-top-style:solid;border-bottom-color:#808080;border-bottom-style:solid;',
+                        '')
+                    new_line.append(r8)
 
                 else:
                     new_line.append(line_css)
@@ -636,9 +646,21 @@ def open_file_xhtml(adharbtn):
         os.remove(file_path)
         os.rename(str(p.parent) + '/' + os.path.splitext(p.name)[0] + "_NEW" + p.suffix,
                   str(p.parent) + '/' + os.path.splitext(p.name)[0] + p.suffix)
+        print(os.path.dirname(os.path.dirname(file_path)))
+        print(os.path.splitext(os.path.basename(os.path.normpath(file_path)))[0])
+        #      N:/Python/html editotr/DSO-2-00
 
-        #zip_path = '/'.join(p.parts[0:-2])
-        #os.rename(zip_path+'.zip', zip_path+'_old.zip')
+        shutil.make_archive(os.path.dirname(os.path.dirname(file_path))+'_NEW', 'zip', os.path.dirname(os.path.dirname(os.path.dirname(file_path))),
+                            os.path.splitext(os.path.basename(os.path.normpath(file_path)))[0])
+        os.remove(os.path.dirname(os.path.dirname(file_path)) + '.zip')
+        os.rename(os.path.dirname(os.path.dirname(file_path)) + '_NEW.zip', os.path.dirname(os.path.dirname(file_path)) + '.zip')
+
+
+
+
+
+        # zip_path = '/'.join(p.parts[0:-2])
+        # os.rename(zip_path+'.zip', zip_path+'_old.zip')
 
         if file_path is not None:
             pass
@@ -648,6 +670,8 @@ def open_file_xhtml(adharbtn):
     time.sleep(1.5)
     warn.destroy()
     adharbtn["state"] = "enable"
+
+
 # КРАЙ НА СТЪПКА 2
 
 
@@ -655,17 +679,13 @@ def open_file_xhtml(adharbtn):
 step_1_labelframe = LabelFrame(
     ws,
     text='Стъпка 1')
-step_1_labelframe.grid(row=0, column=0,  padx=10, pady=20, sticky=W)
-
-
+step_1_labelframe.grid(row=0, column=0, padx=10, pady=20, sticky=W)
 
 label1 = Label(
     step_1_labelframe,
     text='Посочи ZIP файл:'
 )
 label1.grid(row=0, column=0, padx=10, pady=10, sticky=W)
-
-
 
 zipbutton = Button(
     step_1_labelframe,
@@ -674,31 +694,40 @@ zipbutton = Button(
 )
 zipbutton.grid(row=0, column=1, padx=15, pady=20)
 
-
-
-
-
-
 ch_label1 = Label(
     step_1_labelframe,
     text='Кои промени да се приложат:'
 )
 ch_label1.grid(row=1, column=0, padx=10, pady=10, sticky=W)
 
-
 ch0 = IntVar(value=1)
-Checkbutton(step_1_labelframe, text="Дoбавяне на редове в CAL файла", variable=ch0).grid(row=2,column=0, padx=30, sticky=W)
-
+Checkbutton(step_1_labelframe, text="Дoбавяне на редове в CAL файла", variable=ch0).grid(row=2, column=0, padx=30,
+                                                                                         sticky=W)
 
 ch_label1_1 = Label(
     step_1_labelframe,
     text='--------------------   ИЛИ    -----------------------'
 )
-ch_label1_1.grid(row=3, column=0, padx=10, pady=10, sticky=W)
+ch_label1_1.grid(row=3, column=0, padx=10, pady=5, sticky=W)
 
 ch1 = IntVar(value=1)
-Checkbutton(step_1_labelframe, text="/xbrl/2019    -->    /xbrl/2020", variable=ch1).grid(row=4,column=0, padx=30, sticky=W)
+Checkbutton(step_1_labelframe, text="Общи промени и замени", variable=ch1).grid(row=4, column=0, padx=30, sticky=W)
 
+logifle = os.path.split(__file__)[0] + "/changes_log.xlsx"
+
+
+def open_logfile():
+    os.startfile(logifle)
+
+
+logbutton = Button(
+    step_1_labelframe,
+    text='Виж списък с промените',
+    command=open_logfile
+)
+logbutton.grid(row=4, column=1, padx=1, pady=1)
+
+'''
 ch2 = IntVar(value=1)
 Checkbutton(step_1_labelframe, text="Taxonomy 2019    -->    Taxonomy 2020", variable=ch2).grid(row=5,column=0, padx=30, sticky=W)
 
@@ -756,7 +785,7 @@ Checkbutton(step_1_labelframe, text="preferredLabel=http://www.xbrl.org/2009/rol
 
 ch19 = IntVar(value=1)
 Checkbutton(step_1_labelframe, text="http://www.xbrl.org/2009/role/netLabel   --->   Празен стринг", variable=ch19).grid(row=22,column=0, padx=30, sticky=W)
-
+'''
 #####################################################
 #####################################################
 #####################################################
@@ -764,34 +793,23 @@ Checkbutton(step_1_labelframe, text="http://www.xbrl.org/2009/role/netLabel   --
 #####################################################
 
 
-
-
-
-#Стъпка 2 frame
+# Стъпка 2 frame
 step_2_labelframe = LabelFrame(
     ws,
     text='Стъпка 2')
-step_2_labelframe.grid(row=2, column=0,  padx=20, pady=20, sticky=W)
-
-
-
-
+step_2_labelframe.grid(row=2, column=0, padx=10, pady=10, sticky=W)
 
 adhar = Label(
     step_2_labelframe,
-    text='Посочи XBRL репорт:'
+    text='Посочи XBRL репорт:\n (Стилизиране на репорта, CSS)'
 )
-adhar.grid(row=0, column=0, padx=50, pady=10)
+adhar.grid(row=0, column=0, padx=10, pady=10)
 
 adharbtn = Button(
     step_2_labelframe,
     text='Choose File',
     command=lambda: open_file_xhtml(adharbtn)
 )
-adharbtn.grid(row=0, column=1, padx=10, pady=20)
-
-
-
-
+adharbtn.grid(row=0, column=1, padx=10, pady=30)
 
 ws.mainloop()
